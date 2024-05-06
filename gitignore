@@ -1,0 +1,4 @@
+cypress.env.json
+cypress-mochawesome-reporter/
+cypress/videos
+cypress/reports
