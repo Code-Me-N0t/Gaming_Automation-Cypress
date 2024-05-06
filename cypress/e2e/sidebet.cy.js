@@ -64,18 +64,39 @@ context('Mobile Vue Automation: Sidebet', () => {
         cy.get('div#game-menu').should('be.visible')
 
         cy.get('div.table-card').eq(0).click()
-        cy.get('div#game-content', { timeout: 30000 }).should('be.visible')
+        cy.get('div#game-content', { timeout: 30000 })
+        .should('be.visible')
+        .should('not.contain', 'SHUFFLING', {timeout: 120000})
     
-        cy.get('span.timer').invoke('text').then((timer) => {
+        cy.get('span.timer')
+        .invoke('text')
+        .then((timer) => {
             if(timer == 'CLOSED' || timer < 10){
                 cy.contains('Please Place Your Bet!', {timeout: 60000}).should('exist')
             }
-            cy.get('div.bet-table.b').should('not.be.disabled', {timeout: 60000}).click({timeout: 60000})
+            cy.get('div.bet-table.b')
+            .should('not.be.disabled', {timeout: 60000})
+            .click({timeout: 60000})
             cy.get('div.Confirm').click()
         })
+        cy.get('div#bet-msg-toast', {timeout: 20000})
+        .should('contain.text', 'No More Bets!', {timeout: 20000})
+        
+        cy.get('div#bet-msg-toast', {timeout: 20000})
+        .should('contain.text', 'Please Place Your Bet!', {timeout: 20000})
+
+        cy.get('div.balance').invoke('text').then((balance) => {
+            cy.setVariable(balance)
+        })
+
         cy.get('div#btn-tips').click('center')
         cy.get('div#sidebar>.container', {timeout: 10000}).should('be.visible')
         cy.get('div.v-tabs__wrapper div:nth-child(3)').click('center')
+    })
+
+    it('sample', () => {
+        const balance = Cypress.env('element')
+        cy.log(balance)
     })
 
     it('Sidebet Automation: Single Bet', () => {
@@ -84,14 +105,14 @@ context('Mobile Vue Automation: Sidebet', () => {
                 cy.get('div.mini-table-card')
                 .contains(value)
                 .parents('div.mini-table-card')
-                .should('not.contain', 'SHUFFLING', {timeout: 120000})
+                .should('not.contain', 'Shuffling', {timeout: 120000})
                 .scrollIntoView()   
                 .should('be.visible')
 
                 cy.get('div.mini-table-card')
                 .contains(value)
                 .parents('.mini-table-card')
-                .find('div.card-bottom button:nth-child(2)')
+                .find('div.card-bottom button:nth-child(2)', {timeout: 120000})
                 .click({ timeout: 60000 })
 
                 cy.get('div.mini-table-card')

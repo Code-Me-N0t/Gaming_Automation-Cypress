@@ -24,3 +24,6 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 import 'cypress-wait-until';
+Cypress.Commands.add('setVariable', (text) => {
+    Cypress.env('element', text);
+  });
