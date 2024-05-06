@@ -1,33 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mobile Vue Automation: Sidebet</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      line-height: 1.6;
-      margin: 0;
-      padding: 20px;
-    }
-    h1, h2, h3 {
-      color: #333;
-    }
-    ul {
-      list-style-type: disc;
-      padding-left: 20px;
-    }
-    li {
-      margin-bottom: 5px;
-    }
-    code {
-      background-color: #f4f4f4;
-      padding: 5px;
-      border-radius: 3px;
-    }
-  </style>
-</head>
 <body>
   <h1>Mobile Vue Automation: Sidebet</h1>
   
