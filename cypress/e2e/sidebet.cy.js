@@ -1,8 +1,5 @@
 /// <reference types="cypress" />
 
-const { execSync } = require('child_process');
-const { clear, timeStamp, time } = require('console');
-
 context('Mobile Vue Automation: Sidebet', () => {
     beforeEach(() => {
         const host = Cypress.env("host")
