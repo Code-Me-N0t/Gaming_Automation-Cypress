@@ -1,0 +1,13 @@
+{
+    "scripts": {
+        "cy:open": "cypress open",
+        "test": "cypress run",
+        "generate-report": "mochawesome-merge cypress/reports/*.json | mochawesome-report-generator -o cypress/reports/html"
+    },
+    "dependencies": {
+        "cypress-wait-until": "^3.0.2"
+    },
+    "devDependencies": {
+        "cypress-mochawesome-reporter": "^3.8.2"
+    }
+}

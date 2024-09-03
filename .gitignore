@@ -1,0 +1,3 @@
+cypress.env.json
+fixtures/betareas.json
+fixtures/gametable.json
