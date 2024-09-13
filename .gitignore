@@ -3,4 +3,4 @@ fixtures/betareas.json
 fixtures/gametable.json
 *.html
 reports/index.html
-reports
+reports/*.html
