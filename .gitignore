@@ -1,3 +1,5 @@
 cypress.env.json
 fixtures/betareas.json
 fixtures/gametable.json
+*.html
+reports/index.html
