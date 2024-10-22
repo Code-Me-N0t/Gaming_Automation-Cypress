@@ -15,7 +15,7 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands';
-import 'C:/Users/Reden Longcop/Documents/CYPRESS/sidebet_automation/cypress-mochawesome-reporter/register.js';
+// import 'C:/Users/ITA-40138/Documents/CYPRESS/Gaming_Automation-Cypress/cypress-mochawesome-reporter/register.js';
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')

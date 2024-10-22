@@ -41,73 +41,69 @@ context('Mobile Vue Automation: Sidebet', () => {
                     qs: { key: gameKey },
                 }).then((response) => {
                     const gameurl = response.body.data.url
-                    cy.viewport('samsung-s10');
+                    cy.viewport('samsung-s10')
                     cy.intercept('GET', gameurl, (req) => {
-                        req.headers['user-agent'] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 14_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148';
-                    }).as('gamePage');
+                        req.headers['user-agent'] = Cypress.env("emulator")
+                    }).as('gamePage')
 
-                    cy.visit(gameurl, {timeout: 60000});
+                    cy.visit(gameurl, {timeout: 60000})
                     cy.document().then((doc) => {
-                        const style = doc.createElement('style');
-                        style.innerHTML = `::-webkit-scrollbar {display: none;}`
-                        doc.head.appendChild(style);
-                    });
-                    cy.wait('@gamePage');
+                        const style = doc.createElement('style')
+                        style.innerHTML = `::-webkit-scrollbar {display: none}`
+                        doc.head.appendChild(style)
+                    })
+                    cy.wait('@gamePage')
                     cy.get('div#pre-loading').should('be.visible')
-                });
-            });
-        });
-    });
+                })
+            })
+        })
+    })
 
     beforeEach('Bet Ingame First', () => {
         cy.get('div#lobby', { timeout: 10000 }).should('be.visible')
         cy.get('div#game-menu').should('be.visible')
 
         cy.get('div.table-card').eq(0).click()
-        cy.get('div#game-content', { timeout: 30000 })
-        .should('be.visible')
-        .should('not.contain', 'SHUFFLING', {timeout: 120000})
+        cy.get('div#bet-msg-toast', { timeout: 30000 })
+        .should('not.contain', 'Shuffling', {timeout: 120000})
     
-        cy.get('span.timer')
-        .invoke('text')
-        .then((timer) => {
-            if(timer == 'CLOSED' || timer < 10){
-                cy.contains('Please Place Your Bet!', {timeout: 60000}).should('exist')
-            }
-            cy.get('div.bet-table.b')
-            .should('not.be.disabled', {timeout: 60000})
-            .click({timeout: 60000})
-            cy.get('div.Confirm').click()
-        })
+        cy.get('div.bet-table.b')
+        .click({timeout: 60000})
+        cy.get('div.Confirm').click()
         cy.get('div#bet-msg-toast', {timeout: 20000})
         .should('contain.text', 'No More Bets!', {timeout: 20000})
         
-        cy.get('div#bet-msg-toast', {timeout: 20000})
-        .should('contain.text', 'Please Place Your Bet!', {timeout: 20000})
+        cy.get('div#bet-msg-toast', {timeout: 150000})
+        .should('contain.text', 'Please Place Your Bet!')
 
-        cy.get('div.balance').invoke('text').then((balance) => {
+        cy.get('div.balance')
+        .invoke('text')
+        .then((balance) => {
             cy.setVariable(balance)
         })
+
+        cy.findChipWithValue(4)
 
         cy.get('div#btn-tips').click('center')
         cy.get('div#sidebar>.container', {timeout: 10000}).should('be.visible')
         cy.get('div.v-tabs__wrapper div:nth-child(3)').click('center')
     })
 
-    it('sample', () => {
-        const balance = Cypress.env('element')
-        cy.log(balance)
-    })
+    // it('Edit Chip', () => {
+        
+    // })
 
     it('Sidebet Automation: Single Bet', () => {
+        const balance = Cypress.env('element')
+        cy.log(balance)
+
         cy.fixture('games').then((games) => {
-            games.BACCARAT.forEach((value) => {
+            games.DT.forEach((value) => {
                 cy.get('div.mini-table-card')
                 .contains(value)
-                .parents('div.mini-table-card')
+                .scrollIntoView()
                 .should('not.contain', 'Shuffling', {timeout: 120000})
-                .scrollIntoView()   
-                .should('be.visible')
+                .scrollIntoView()
 
                 cy.get('div.mini-table-card')
                 .contains(value)
@@ -125,7 +121,7 @@ context('Mobile Vue Automation: Sidebet', () => {
                 cy.get('div.mini-table-card')
                 .contains(value)
                 .parents('.mini-table-card')
-                .find('div.offset-item0 > div', {timeout: 60000})
+                .find('div.bet-action.offset-item0 > div', {timeout: 60000})
                 .click({ timeout: 60000 })
 
                 cy.get('div.mini-table-card')
@@ -135,10 +131,15 @@ context('Mobile Vue Automation: Sidebet', () => {
                 .should('contain.text', 'Bet Successful')
                 .scrollIntoView()
 
-                cy.get('div.mini-table-card')
-                .contains(value)
-                .parents('.mini-table-card')
-                .find('div.card-bottom button:nth-child(2)', { timeout: 60000 })
+
+                cy.get('div.close').click('left')
+
+                cy.get('div.balance')
+                .invoke('text')
+                .then((newbalance) => {
+                    expect(balance).to.not.equal(newbalance)
+                })
+
             })
         })
     })

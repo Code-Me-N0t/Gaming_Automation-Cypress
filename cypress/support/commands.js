@@ -23,7 +23,33 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
-import 'cypress-wait-until';
-Cypress.Commands.add('setVariable', (text) => {
-    Cypress.env('element', text);
+import 'cypress-wait-until'
+
+Cypress.Commands.add('setVariable', (text) => { Cypress.env('element', text) })
+
+Cypress.Commands.add('findChipWithValue', (value) => {
+  const formattedValue = formatValue(value);
+  cy.get('div.chip-value').then((chips) => {
+    const lastindex = chips.length - 1;
+    
+    chips.each((chip, index) => {
+      const chipText = Cypress.$(chip).text().trim();
+      
+      cy.log(index);
+      cy.log(chipText);
+      
+      if (chipText === formattedValue) {
+        cy.wrap(chip).click();
+      } else if (index === lastindex && chipText !== formattedValue) {
+        cy.log('yono');
+      }
+    });
   });
+});
+
+
+function formatValue(value) {
+  if (value >= 1000000) { return (value / 1000000) + 'M' }
+  else if (value >= 1000) { return (value / 1000) + 'K' }
+  return value.toString()
+}
